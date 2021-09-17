@@ -2,12 +2,12 @@
 #include <GLFW/glfw3.h>
 #include <string>
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
+#include "BufferLayout.h"
 #include "Debug.h"
-
+#include "Shader.h"
 
 
 //#include <stdlib.h>
@@ -15,93 +15,6 @@
 //#include <Windows.h>
 
 
-struct ShaderProgranSource
-{
-	std::string VertexSource;
-	std::string FragmentSource;
-};
-
-static ShaderProgranSource PlaseShader(const std::string& filepath)
-{
-	std::ifstream stream(filepath);
-
-	enum class ShaderType
-	{
-		NONE = -1, VERTEX = 0, FRAGMENT = 1
-	};
-
-	std::stringstream ss[2];
-
-	std::string line;
-
-	ShaderType type = ShaderType::NONE;
-
-	while (getline(stream, line))
-	{
-		if (line.find("#shader") != std::string::npos)
-		{
-			if (line.find("vertex") != std::string::npos)
-			{
-				type = ShaderType::VERTEX;
-			}
-			else if (line.find("fragment") != std::string::npos)
-			{
-				type = ShaderType::FRAGMENT;
-			}
-		}
-		else
-		{
-			ss[(int)type] << line << "\n";
-		}
-
-	}
-
-	return { ss[0].str(), ss[1].str() };
-}
-
-static unsigned int CompileShader(const std::string& source, unsigned int type)
-{
-	unsigned int id = glCreateShader(type);
-
-	const char* src = source.c_str();
-
-	glShaderSource(id, 1, &src, NULL);
-
-	glCompileShader(id);
-
-	int result;
-	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
-
-	if (result == GL_FALSE)
-	{
-		int length;
-		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-
-		char* message = (char*)alloca(length * sizeof(char));
-
-		glGetShaderInfoLog(id, length, &length, message);
-
-
-		std::cout << message << "\n";
-
-	}
-
-	return id;
-}
-
-static int CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
-{
-	unsigned int program = glCreateProgram();
-	unsigned int vs = CompileShader(vertexShader, GL_VERTEX_SHADER);
-	unsigned int fs = CompileShader(fragmentShader, GL_FRAGMENT_SHADER);
-
-	glAttachShader(program, vs);
-	glAttachShader(program, fs);
-	glLinkProgram(program);
-	glValidateProgram(program);
-
-	return program;
-}
 
 int main(void)
 {
@@ -154,22 +67,22 @@ int main(void)
 		};
 
 
-
+		VertexArray va;
 		VertexBuffer vb(positions, 4 * 3 * sizeof(float));
+		VertexBufferLayout layout;
+		layout.Push<float>(3);
+		va.AddBuffer(vb, layout);
 
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (const void*)0);
+		//glEnableVertexAttribArray(0);
+		//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (const void*)0);
 
 		IndexBuffer ib(indices, 6);
 
-		ShaderProgranSource source = PlaseShader("res\\shaders\\DefaultShader.shader");
+		Shader shader("res/shaders/DefaultShader.shader");
+		shader.Bind();
+		shader.SetUnform4f("u_ColorOffset", 0.2f, 0.3f, 0.1f, 1.0f);
+		shader.Unbind();
 
-		unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
-		glUseProgram(shader);
-
-		int Location = glGetUniformLocation(shader, "u_ColorOffset");
-		ASSERT(Location != -1)
-			glUniform4f(Location, 1.0f, 1.0f, 1.0f, 0.0f);
 		/* Loop until the user closes the window */
 		while (!glfwWindowShouldClose(window))
 		{
@@ -189,7 +102,6 @@ int main(void)
 			glfwPollEvents();
 
 		}
-	glDeleteProgram(shader);
 	}
 
 	glfwTerminate();
