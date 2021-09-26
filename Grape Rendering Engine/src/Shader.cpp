@@ -113,12 +113,22 @@ unsigned int Shader::CreateShader(const std::string& vertexShader, const std::st
 
 void Shader::SetUnform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
-	GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3))
+	GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
+}
+
+void Shader::SetUnform1f(const std::string& name, float v0)
+{
+	GLCall(glUniform1f(GetUniformLocation(name), v0));
+}
+
+void Shader::SetUnform1i(const std::string& name, int v0)
+{
+	GLCall(glUniform1i(GetUniformLocation(name), v0));
 }
 
 int Shader::GetUniformLocation(const std::string& name)
 {
-	/*GLCall*/int location = glGetUniformLocation(p_RendererID, name.c_str());
+	GLCall(int location = glGetUniformLocation(p_RendererID, name.c_str()));
 	if (location == -1) 
 	{
 		// TODO: log this ^^

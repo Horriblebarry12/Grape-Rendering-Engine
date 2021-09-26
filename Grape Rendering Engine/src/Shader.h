@@ -11,7 +11,7 @@ struct ShaderProgranSource
 class Shader
 {
 public:
-	Shader(const std::string& filename);
+	Shader(const std::string& filename = "res/shaders/DefaultShader.shader");
 	~Shader();
 
 	void Bind() const;
@@ -19,6 +19,8 @@ public:
 
 	// Uniforms
 	void SetUnform4f(const std::string& name, float v0, float v1, float v2, float v3);
+	void SetUnform1f(const std::string& name, float v0);
+	void SetUnform1i(const std::string& name, int v0);
 private:
 	
 	std::string p_Filepath;
