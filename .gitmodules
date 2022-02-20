@@ -1,3 +1,3 @@
-[submodule "GrapeRenderingEngine\\Dependencies\\spdlog"]
-	path = GrapeRenderingEngine\\Dependencies\\spdlog
-	url = https://github.com/gabime/spdlog
+[submodule "Grape Rendering Engine/Dependencies/spdlog"]
+	path = Grape Rendering Engine/Dependencies/spdlog
+	url = https://github.com/gabime/spdlog.git
