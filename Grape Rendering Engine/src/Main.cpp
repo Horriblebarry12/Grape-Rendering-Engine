@@ -34,11 +34,11 @@ int main(void)
 		}
 		n++;
 	}
-	OpenGLVertexBuffer vb(mesh.scene->mMeshes[0]->mVertices, mesh.scene->mMeshes[0]->mNumVertices, mesh.scene->mMeshes[0]->mFaces->mIndices, mesh.scene->mMeshes[0]->mFaces->mNumIndices);
+	OpenGLVertexBuffer vb(verticies, mesh.scene->mMeshes[0]->mNumVertices, mesh.scene->mMeshes[0]->mFaces->mIndices, mesh.scene->mMeshes[0]->mFaces->mNumIndices);
 
 	Material mat("res\\shaders\\TestShader.shader");
 	mat.Bind();
-	renderer.GetBufferLayout().Push<float>(2, vb);
+	renderer.GetBufferLayout().Push<float>(3, vb);
 
 	vb.SetMaterial(mat);
 	
