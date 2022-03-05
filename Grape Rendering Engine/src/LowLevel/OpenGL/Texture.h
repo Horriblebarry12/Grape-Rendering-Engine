@@ -1,11 +1,11 @@
 #pragma once
 #include <string>
 
-class Texture
+class glTexture
 {
 public:
-	Texture(const std::string& path);
-	~Texture();
+	glTexture(const std::string& path);
+	~glTexture();
 
 	void Bind(unsigned int slot = 0) const;
 	void Unbind() const;

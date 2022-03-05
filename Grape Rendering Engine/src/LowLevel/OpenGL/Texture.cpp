@@ -1,9 +1,9 @@
 #include "Texture.h"
-#include "Debug.h"
+#include "GLDebug.h"
 #include "GL/glew.h"
 #include "stb_image/stb_image.h"
 
-Texture::Texture(const std::string& path) : p_Filepath(path), p_LocalBuffer(nullptr), p_Width(0), p_Height(0), p_BPP(0)
+glTexture::glTexture(const std::string& path) : p_Filepath(path), p_LocalBuffer(nullptr), p_Width(0), p_Height(0), p_BPP(0)
 {
 
 	stbi_set_flip_vertically_on_load(1);
@@ -25,18 +25,18 @@ Texture::Texture(const std::string& path) : p_Filepath(path), p_LocalBuffer(null
 	}
 }
 
-Texture::~Texture()
+glTexture::~glTexture()
 {
 	GLCall(glDeleteTextures(1, &p_RendererID));
 }
 
-void Texture::Bind(unsigned int slot) const
+void glTexture::Bind(unsigned int slot) const
 {
 	GLCall(glActiveTexture(GL_TEXTURE0 + slot));
 	GLCall(glBindTexture(GL_TEXTURE_2D, p_RendererID));
 }
 
-void Texture::Unbind() const
+void glTexture::Unbind() const
 {
 	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }

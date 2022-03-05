@@ -1,7 +1,7 @@
 #include "VertexBuffer.h"
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
-#include "Debug.h"
+#include "GLDebug.h"
 VertexBuffer::VertexBuffer(const void* data, unsigned int size)
 {
     GLCall(glGenBuffers(1, &m_RendererID));

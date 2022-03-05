@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "GLDebug.h"
 
 void Renderer::Clear() const
 {

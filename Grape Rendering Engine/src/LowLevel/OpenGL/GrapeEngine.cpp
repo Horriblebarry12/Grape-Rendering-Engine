@@ -3,7 +3,7 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "BufferLayout.h"
-#include "Debug.h"
+#include "GLDebug.h"
 #include "Shader.h"
 #include "Renderer.h"
 #include "Texture.h"

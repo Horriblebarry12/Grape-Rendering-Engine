@@ -1,21 +1,9 @@
 #include "Mesh.h"
+#include "GL/glew.h"
 
-#include "assimp/postprocess.h"
-
-Mesh::Mesh(std::string MeshLocation)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<UINT32> indices, std::vector<Texture> textures)
 {
-
-    scene = importer.ReadFile(MeshLocation, 
-        aiProcess_CalcTangentSpace |
-        aiProcess_Triangulate |
-        aiProcess_JoinIdenticalVertices |
-        aiProcess_SortByPType );
-
-    if (scene == nullptr)
-    {
-        // TODO: Log this error.
-    }
-
-
-
+    this->vertices = vertices;
+    this->indices = indices;
+    this->textures = textures;
 }

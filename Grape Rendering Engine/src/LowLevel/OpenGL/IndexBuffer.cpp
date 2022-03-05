@@ -1,7 +1,7 @@
 #include "IndexBuffer.h"
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
-#include "Debug.h"
+#include "GLDebug.h"
 
 IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count)
 {

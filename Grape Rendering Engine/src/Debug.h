@@ -1,0 +1,23 @@
+#pragma once
+#include <string>
+#include "spdlog/spdlog.h"
+
+// Debug
+#if _DEBUG
+#define ASSERT(x) if (!(x)) __debugbreak();
+#else
+#define ASSERT(x) x;
+#endif
+
+// Loging
+#define LogInfo(msg, ...) spdlog::info(msg, __VA_ARGS__)
+#define LogWarning(msg, ...) spdlog::warn(msg, __VA_ARGS__)
+#define LogError(msg, ...) spdlog::error(msg, __VA_ARGS__)
+#define LogCritical(msg, ...) spdlog::critical(msg, __VA_ARGS__)
+#if _DEBUG
+#define LogDebug(msg, ...) spdlog::debug(msg, __VA_ARGS__)
+#else
+#define LogDebug(msg)
+#endif
+
+

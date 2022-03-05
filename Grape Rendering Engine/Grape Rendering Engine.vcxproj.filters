@@ -24,7 +24,7 @@
     <ClCompile Include="src\LowLevel\OpenGL\IndexBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\LowLevel\OpenGL\Debug.cpp">
+    <ClCompile Include="src\LowLevel\OpenGL\GLDebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\LowLevel\OpenGL\Shader.cpp">
@@ -72,16 +72,10 @@
     <ClCompile Include="Dependencies\ImGUI\ImGUI\imgui_impl_glfw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Main.cpp">
+    <ClCompile Include="src\Renderers\OpenGL\OpenGLRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\PlatformSpecificRenderers\OpenGL\OpenGLRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\PlatformSpecificRenderers\OpenGL\Material.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Mesh.cpp">
+    <ClCompile Include="src\Renderers\OpenGL\GLMaterial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\spdlog\src\async.cpp">
@@ -103,6 +97,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\spdlog\src\stdout_sinks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderers\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -562,7 +571,7 @@
     <ClInclude Include="src\LowLevel\OpenGL\IndexBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\LowLevel\OpenGL\Debug.h">
+    <ClInclude Include="src\LowLevel\OpenGL\GLDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\LowLevel\OpenGL\Shader.h">
@@ -1465,13 +1474,10 @@
     <ClInclude Include="src\LowLevel\OpenGLPCM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\PlatformSpecificRenderers\OpenGL\OpenGLRenderer.h">
+    <ClInclude Include="src\Renderers\OpenGL\OpenGLRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\PlatformSpecificRenderers\OpenGL\Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mesh.h">
+    <ClInclude Include="src\Renderers\OpenGL\GLMaterial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\Assimp\include\assimp\Compiler\poppack1.h">
@@ -2024,6 +2030,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\spdlog\include\spdlog\version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderers\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

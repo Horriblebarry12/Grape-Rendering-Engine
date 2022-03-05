@@ -1,63 +1,54 @@
-#include "PlatformSpecificRenderers/OpenGL/Material.h"
-#include "PlatformSpecificRenderers/OpenGL/OpenGLRenderer.h"
+#include "Renderers/OpenGL/GLMaterial.h"
+#include "Renderers/OpenGL/OpenGLRenderer.h"
+
+#include "Mesh.h"
+#include "Model.h"
 
 #include <chrono>
 #include "vendor/stb_image/stb_image.h"
-#include "Mesh.h"
 
 int main(void)
 {
 
-
-	unsigned int indices[]
-	{ // clockwise
-		0, 1, 3,   // first triangle
-		1, 2, 3,    // second triangle
-
-	};
-
-	//TODO: fix this
-
-	Mesh mesh("C:\\Users\\harpi\\source\\repos\\Grape Rendering Engine\\x64\\Debug\\Test.blend");
+	spdlog::set_level(spdlog::level::debug);
 
 	OpenGLRenderer renderer;
 	renderer.Init();
 
-	float* verticies = new float[mesh.scene->mMeshes[0]->mNumVertices*3];
-	{
-		int n = 0;
-		for (size_t i = 0; i < mesh.scene->mMeshes[0]->mNumVertices * 3; i += 3)
-		{
-			verticies[i] = mesh.scene->mMeshes[n]->mVertices[n].x;
-			verticies[i+1] = mesh.scene->mMeshes[n]->mVertices[n].y;
-			verticies[i+2] = mesh.scene->mMeshes[n]->mVertices[n].z;
-		}
-		n++;
-	}
-	OpenGLVertexBuffer vb(verticies, mesh.scene->mMeshes[0]->mNumVertices, mesh.scene->mMeshes[0]->mFaces->mIndices, mesh.scene->mMeshes[0]->mFaces->mNumIndices);
 
-	Material mat("res\\shaders\\TestShader.shader");
-	mat.Bind();
-	renderer.GetBufferLayout().Push<float>(3, vb);
 
-	vb.SetMaterial(mat);
-	
-	std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-		std::chrono::system_clock::now().time_since_epoch());
+	Mesh mesh = Mesh(std::vector<Vertex>(), std::vector<UINT32>(), std::vector<Texture>());
 
-	float frame = 0.0f;
+	mesh.vertices.push_back(Vertex(glm::vec3(0.5f, 0.5f, -0.1f), glm::vec3(0.0f), glm::vec2(0.0f)));
+	mesh.vertices.push_back(Vertex(glm::vec3(0.5f, -0.5f, -0.1f), glm::vec3(0.0f), glm::vec2(0.0f)));
+	mesh.vertices.push_back(Vertex(glm::vec3(-0.5f, -0.5f, -0.1f), glm::vec3(0.0f), glm::vec2(0.0f)));
+	mesh.vertices.push_back(Vertex(glm::vec3(-0.5f, 0.5f, -0.1f), glm::vec3(0.0f), glm::vec2(0.0f)));
+
+	mesh.indices.push_back(0);
+	mesh.indices.push_back(1);
+	mesh.indices.push_back(3);
+	mesh.indices.push_back(1);
+	mesh.indices.push_back(2);
+	mesh.indices.push_back(3);
+
+	GLMaterial mat("res\\shaders\\TestShader.shader");
+	mesh.mat = mat;
+	renderer.SetupMesh(mesh);
+
+	Model model = Model("C:\\Users\\harpi\\source\\repos\\Grape Rendering Engine\\x64\\Debug\\Test.blend");
+	renderer.SetupModel(model);
+	UINT64 frame = 0.0f;
 	while (!renderer.ShouldClose())
 	{
 		renderer.Clear();
 		mat.Bind();
-		mat.SetUniform1f("iTime", frame/100.0f);
-		renderer.DrawIndexed(vb);
+		mat.SetVar1f("iTime", frame/100.0f);
+		// renderer.DrawIndexed(vb);
+		// renderer.DrawMesh(mesh);
+		renderer.DrawModel(model);
 		renderer.Finish();
 		renderer.Poll();
-		std::cout << frame << std::endl;
 		frame++;
-		ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-			std::chrono::system_clock::now().time_since_epoch());
 	}
 
 

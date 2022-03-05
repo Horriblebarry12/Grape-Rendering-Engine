@@ -1,16 +1,44 @@
 #pragma once
 #include "GrapePCH.h"
+#include "Renderers/Material.h"
+struct Vertex
+{
+    Vertex(glm::vec3 position, glm::vec3 normal, glm::vec2 texCoords) : Position(position), Normal(normal), TexCoords(texCoords)
+    {
 
-#include "assimp/Importer.hpp"
-#include "assimp/scene.h"
+    }
+
+    Vertex() {};
+
+    glm::vec3 Position;
+    glm::vec3 Normal;
+    glm::vec2 TexCoords;
+};
+
+struct Texture
+{
+    unsigned int id;
+    std::string type;
+    std::string path;
+    bool isSetup;
+};
+
+
 
 class Mesh
 {
 public:
-	Mesh(std::string MeshLocation);
+    // mesh data
+    std::vector<Vertex>       vertices;
+    std::vector<UINT32> indices;
+    std::vector<Texture>      textures;
+    
+    Material mat;
 
-	const aiScene* scene;
-
-	Assimp::Importer importer;
+    Mesh(std::vector<Vertex> vertices, std::vector<UINT32> indices, std::vector<Texture> textures);
+    /// <summary>
+    /// For OpenGL renderer, do not edit
+    /// </summary>
+    unsigned int VAO, VBO, EBO;
 };
 
