@@ -41,10 +41,22 @@ void OpenGLRenderer::Init()
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback( &OpenGLRenderer::GLDebugMessageCallback, nullptr);
+
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    //glDepthFunc(GL_LESS);
+    //glDepthMask(GL_FALSE);
+
+    stbi_set_flip_vertically_on_load(1);
 }
 
 void OpenGLRenderer::Clear()
 {
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+	//glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -57,7 +69,7 @@ void OpenGLRenderer::DrawIndexed(OpenGLVertexBuffer& vb, DrawType drawType) cons
 
 void OpenGLRenderer::DrawMesh(Mesh& mesh)
 {
-    mesh.mat.Bind();
+    mesh.mat->Bind();
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
     for (unsigned int i = 0; i < mesh.textures.size(); i++)
@@ -75,19 +87,20 @@ void OpenGLRenderer::DrawMesh(Mesh& mesh)
         else if (name == "texture_specular")
             number = std::to_string(specularNr++);
 
-        mesh.mat. SetVar1f(("material." + name + number).c_str(), i);
+        //mesh.mat->SetVar1f("TextureID", i);
         glBindTexture(GL_TEXTURE_2D, mesh.textures[i].id);
     }
     glActiveTexture(GL_TEXTURE0);
 
     // draw mesh
     glBindVertexArray(mesh.VAO);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    //glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-    mesh.mat.UnBind();
+    mesh.mat->UnBind();
+    glDisable(GL_TEXTURE_2D);
 
 }
 
@@ -143,6 +156,7 @@ UINT32 OpenGLRenderer::SetupTexture(std::string path)
     glGenTextures(1, &textureID);
 
     int width, height, nrComponents;
+    stbi_set_flip_vertically_on_load(true);
     unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrComponents, 0);
     if (data)
     {
@@ -155,7 +169,6 @@ UINT32 OpenGLRenderer::SetupTexture(std::string path)
             format = GL_RGBA;
 
         glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -163,6 +176,8 @@ UINT32 OpenGLRenderer::SetupTexture(std::string path)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        
         stbi_image_free(data);
     }
     else
@@ -174,14 +189,12 @@ UINT32 OpenGLRenderer::SetupTexture(std::string path)
     return textureID;
 }
 
-bool OpenGLRenderer::SetupTexture(Texture tex)
+bool OpenGLRenderer::SetupTexture(Texture& tex)
 {
     if (tex.isSetup)
     {
         return false;
     }
-
-    std::string filename = std::string(tex.path);
 
     unsigned int textureID;
     glGenTextures(1, &textureID);
@@ -295,7 +308,7 @@ void OpenGLRenderer::GLDebugMessageCallback(GLenum source, GLenum type, GLuint i
     {
     case GL_DEBUG_SEVERITY_HIGH:
         LogError("[OPENGL] [Type: {}] [Source: {}] Code: {} | Msg: {} | Data: {}", logType, logSource, id, msg, data);
-        // __debugbreak();
+        __debugbreak();
         break;
 
     case GL_DEBUG_SEVERITY_MEDIUM:

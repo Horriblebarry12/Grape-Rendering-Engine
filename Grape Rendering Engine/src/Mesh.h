@@ -33,7 +33,7 @@ public:
     std::vector<UINT32> indices;
     std::vector<Texture>      textures;
     
-    Material mat;
+    Material* mat;
 
     Mesh(std::vector<Vertex> vertices, std::vector<UINT32> indices, std::vector<Texture> textures);
     /// <summary>

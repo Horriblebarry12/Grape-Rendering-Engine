@@ -49,6 +49,7 @@ public:
 	void SetVar2i(const std::string& name, int v0, int v1) override;
 	void SetVar1i(const std::string& name, int v0) override;
 	void SetVarMat4f(const std::string& name, const glm::mat4& mat) override;
+	virtual void SetVar1b(const std::string& name, const bool v0) override;
 
 #pragma endregion
 

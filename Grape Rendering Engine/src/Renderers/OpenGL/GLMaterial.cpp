@@ -51,6 +51,11 @@ void GLMaterial::SetVarMat4f(const std::string& name, const glm::mat4& mat)
 	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }
 
+void GLMaterial::SetVar1b(const std::string& name, const bool v0)
+{
+	glUniform1i(GetUniformLocation(name), v0);
+}
+
 UINT32 GLMaterial::CompileShader(const std::string& source, unsigned int type)
 {
 	UINT32 id = glCreateShader(type);

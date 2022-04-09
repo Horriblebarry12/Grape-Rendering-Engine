@@ -41,7 +41,8 @@ public:
 	{
 		glDeleteBuffers(1, &VertexBufferID);
 
-		glDeleteBuffers(1, &IndexBufferID);
+		if (UseIndexes)
+			glDeleteBuffers(1, &IndexBufferID);
 	}
 
 	void BindRendering() const
@@ -137,6 +138,7 @@ public:
 	inline int ShouldClose()  { return glfwWindowShouldClose(window); };
 
 	void DrawIndexed(OpenGLVertexBuffer& vb, DrawType drawType = DrawType::Triangle) const;
+	void DrawArray(OpenGLVertexBuffer& vb, DrawType drawType = DrawType::Triangle);
 	void DrawMesh(Mesh& mesh);
 	void DrawModel(Model& model);
 
@@ -148,7 +150,7 @@ public:
 	void SetupMesh(Mesh& mesh);
 	void SetupModel(Model& model);
 	UINT32 SetupTexture(std::string path);
-	bool SetupTexture(Texture tex);
+	bool SetupTexture(Texture& tex);
 
 	GLFWwindow* window;
 
