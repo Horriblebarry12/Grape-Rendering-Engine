@@ -10,31 +10,78 @@
 #include "ImGUI/imgui_impl_opengl3.h"
 #include "ImGUI/imgui_impl_glfw.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "Time.h"
 
 #include "GLFW/glfw3.h"
 
-glm::vec<2, double> PreCursorPos = glm::vec<2, double>(0.0);
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, -3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
 glm::mat4 MoveCamera(glm::mat4 view, GLFWwindow* window)
 {
-	glm::vec<2, double> cursorPos = glm::vec<2, double>(0.0);
-
-	glfwGetCursorPos(window, &cursorPos.x, &cursorPos.y);
-	glm::vec<2, double> deltaCursorPos = cursorPos - PreCursorPos;
-
-	view = glm::rotate_slow(view, (float)deltaCursorPos.x/1000.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-	view = glm::rotate_slow(view, (float)deltaCursorPos.x/1000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	
-
-	int wKey = glfwGetKey(window, GLFW_KEY_W);
-	int aKey = glfwGetKey(window, GLFW_KEY_A);
-	int sKey = glfwGetKey(window, GLFW_KEY_S);
-	int dKey = glfwGetKey(window, GLFW_KEY_D);
-
-	view = glm::translate(view, glm::vec3((wKey -sKey)/2, 0.0f, (aKey -dKey) / 2));
-
-	PreCursorPos = cursorPos;
+	const float cameraSpeed = 0.05f; // adjust accordingly
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		cameraPos += cameraSpeed * cameraFront;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		cameraPos -= cameraSpeed * cameraFront;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		cameraPos += cameraSpeed * cameraUp;
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+		cameraPos -= cameraSpeed * cameraUp;
 
 	return view;
+}
+
+bool firstMouse = true;
+double lastX = 1080.0 / 2.0;
+double lastY = 1920.0 / 2.0;
+
+float pitch = 0.0f, yaw = 0.0f;
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	if (!glfwGetKey(window, GLFW_KEY_LEFT_ALT))
+	{
+		lastX = xpos;
+		lastY = ypos;
+
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		return;
+	}
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos;
+	lastX = xpos;
+	lastY = ypos;
+
+	float sensitivity = 0.1f;
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 direction;
+	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	direction.y = sin(glm::radians(pitch));
+	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraFront = glm::normalize(direction);
 }
 
 std::string GetCurrentDirectory()
@@ -54,7 +101,7 @@ int main(void)
 	OpenGLRenderer renderer;
 	renderer.Init();
 
-
+	//Time::Init((float)glfwGetTime());
 
 	Mesh mesh = Mesh(std::vector<Vertex>(), std::vector<UINT32>(), std::vector<Texture>());
 
@@ -82,7 +129,6 @@ int main(void)
 	glm::mat4 Projection = glm::mat4(1.0f);
 
 	Projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
-	View = glm::translate(View, glm::vec3(0.0f, 0.0f, -3.0f));
 
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(renderer.window, true);
@@ -117,21 +163,28 @@ int main(void)
 	mat.Bind();
 	mat.SetVarMat4f("u_Projection", Projection);
 
+	
+	glfwSetCursorPosCallback(renderer.window, mouse_callback);
+
+	
 
 	while (!renderer.ShouldClose())
 	{
-
+		
+		//Time::TickOneFrame((float)glfwGetTime());
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		//View = MoveCamera(View, renderer.window);
+		View = MoveCamera(View, renderer.window);
 
 		renderer.Clear();
 
+		View = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+
 		{
 
-
+			ImGui::Begin("Debug");
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 			/*
@@ -143,7 +196,7 @@ int main(void)
 			Model = glm::rotate(Model, ModelRotate[0], glm::vec3(1.0f, 0.0f, 0.0f));
 			Model = glm::rotate(Model, ModelRotate[1], glm::vec3(0.0f, 1.0f, 0.0f));
 			Model = glm::rotate(Model, ModelRotate[2], glm::vec3(0.0f, 0.0f, 1.0f));
-			*/
+			
 			float ViewTranslate[3]{ 0.0f, 0.0f, 0.0f };
 			ImGui::SliderFloat3("View Translate", ViewTranslate, -0.1f, 0.1f);
 			View = glm::translate(View, glm::vec3(ViewTranslate[0], ViewTranslate[1], ViewTranslate[2]));
@@ -152,10 +205,11 @@ int main(void)
 			View = glm::rotate(View, ViewRotate[0], glm::vec3(1.0f, 0.0f, 0.0f));
 			View = glm::rotate(View, ViewRotate[1], glm::vec3(0.0f, 1.0f, 0.0f));
 			View = glm::rotate(View, ViewRotate[2], glm::vec3(0.0f, 0.0f, 1.0f));
-			mat.Bind();
+			*/
+			ImGui::End();
 			//mat.SetVarMat4f("u_Model", Model);
+			mat.Bind();
 			mat.SetVarMat4f("u_View", View);
-			
 			
 
 

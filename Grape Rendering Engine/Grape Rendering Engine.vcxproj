@@ -229,6 +229,7 @@
     <ClCompile Include="Dependencies\ImGUI\ImGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Dependencies\ImGUI\ImGUI\imgui_tables.cpp" />
     <ClCompile Include="Dependencies\ImGUI\ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="src\Time.cpp" />
     <None Include="..\.gitattributes" />
     <None Include="Dependencies\Assimp\include\assimp\color4.inl" />
     <None Include="Dependencies\Assimp\include\assimp\material.inl" />
@@ -915,6 +916,7 @@
     <ClInclude Include="src\LowLevel\OpenGL\VertexArray.h" />
     <ClInclude Include="src\LowLevel\OpenGL\VertexBufferLayout.h" />
     <ClInclude Include="src\LowLevel\OpenGL\Texture.h" />
+    <ClInclude Include="src\Time.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Textures\Thanos Kirby.png" />

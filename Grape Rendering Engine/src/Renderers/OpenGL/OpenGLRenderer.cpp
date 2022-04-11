@@ -56,7 +56,6 @@ void OpenGLRenderer::Clear()
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-	//glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -228,6 +227,7 @@ bool OpenGLRenderer::SetupTexture(Texture& tex)
         stbi_image_free(data);
     }
 
+    tex.isSetup = true;
     tex.id = textureID;
 
     return true;
@@ -308,7 +308,7 @@ void OpenGLRenderer::GLDebugMessageCallback(GLenum source, GLenum type, GLuint i
     {
     case GL_DEBUG_SEVERITY_HIGH:
         LogError("[OPENGL] [Type: {}] [Source: {}] Code: {} | Msg: {} | Data: {}", logType, logSource, id, msg, data);
-        __debugbreak();
+        //__debugbreak();
         break;
 
     case GL_DEBUG_SEVERITY_MEDIUM:
