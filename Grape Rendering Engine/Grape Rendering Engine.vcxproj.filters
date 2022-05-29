@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\LowLevel\OpenGL\GrapeEngine.cpp">
+    <ClCompile Include="src\LowLevel\OpenGL\Example.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\LowLevel\OpenGL\VertexBuffer.cpp">
@@ -114,7 +114,7 @@
     <ClCompile Include="src\Renderers\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Time.cpp">
+    <ClCompile Include="src\GTime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -566,6 +566,7 @@
     <None Include="Dependencies\glew-2.1.0\doc\log.html" />
     <None Include="Dependencies\glew-2.1.0\doc\wglew.html" />
     <None Include="..\.gitattributes" />
+    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LowLevel\OpenGL\VertexBuffer.h">
@@ -1474,7 +1475,7 @@
     <ClInclude Include="src\GrapePCH.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\LowLevel\OpenGLPCM.h">
+    <ClInclude Include="src\LowLevel\GrapeOpenGL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderers\OpenGL\OpenGLRenderer.h">
@@ -2047,7 +2048,13 @@
     <ClInclude Include="src\Renderers\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Time.h">
+    <ClInclude Include="src\GTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LowLevel\OpenGL\OpenGLPCH.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Grape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

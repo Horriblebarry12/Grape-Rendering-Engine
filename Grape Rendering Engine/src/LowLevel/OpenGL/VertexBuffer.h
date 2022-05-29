@@ -1,5 +1,7 @@
 #pragma once
-class VertexBuffer
+#include "OpenGLPCH.h"
+
+class GP_API VertexBuffer
 {
 private:
 	unsigned int m_RendererID;

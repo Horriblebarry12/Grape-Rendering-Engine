@@ -1,5 +1,7 @@
 #pragma once
-class IndexBuffer
+#include "OpenGLPCH.h"
+
+class GP_API IndexBuffer
 {
 private:
 	unsigned int m_RendererID;

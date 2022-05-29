@@ -3,11 +3,10 @@
 
 #include "GL/glew.h"
 #include "GrapePCH.h"
-#include "glm/glm.hpp"
 #include "Debug.h"
 #include "Renderers/Material.h"
 
-class GLMaterial : public Material
+class GP_API GLMaterial : public Material
 {
 public:
 

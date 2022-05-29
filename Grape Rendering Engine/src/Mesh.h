@@ -1,7 +1,7 @@
 #pragma once
 #include "GrapePCH.h"
 #include "Renderers/Material.h"
-struct Vertex
+struct GP_API Vertex
 {
     Vertex(glm::vec3 position, glm::vec3 normal, glm::vec2 texCoords) : Position(position), Normal(normal), TexCoords(texCoords)
     {
@@ -15,7 +15,7 @@ struct Vertex
     glm::vec2 TexCoords;
 };
 
-struct Texture
+struct GP_API Texture
 {
     unsigned int id;
     std::string type;
@@ -25,7 +25,7 @@ struct Texture
 
 
 
-class Mesh
+class GP_API Mesh
 {
 public:
     // mesh data

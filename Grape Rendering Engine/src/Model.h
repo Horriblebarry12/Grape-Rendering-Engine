@@ -7,7 +7,7 @@
 class Mesh;
 struct Texture;
 
-class Model
+class GP_API Model
 {
 public:
     Model(std::string path)

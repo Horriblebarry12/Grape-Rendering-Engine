@@ -1,8 +1,9 @@
 #pragma once
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
+#include "OpenGLPCH.h"
 
-class VertexArray
+class GP_API VertexArray
 {
 public:
 	VertexArray();

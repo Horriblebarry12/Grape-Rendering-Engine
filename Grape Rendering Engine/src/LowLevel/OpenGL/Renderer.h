@@ -2,9 +2,9 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
+#include "OpenGLPCH.h"
 
-
-class Renderer
+class GP_API Renderer
 {
 public:
 	void Clear() const;

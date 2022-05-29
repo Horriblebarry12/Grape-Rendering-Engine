@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
+#include "OpenGLPCH.h"
 
-class glTexture
+class GP_API glTexture
 {
 public:
 	glTexture(const std::string& path);

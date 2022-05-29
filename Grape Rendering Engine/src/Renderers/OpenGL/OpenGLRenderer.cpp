@@ -59,6 +59,8 @@ void OpenGLRenderer::Clear()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+inline int OpenGLRenderer::ShouldClose() { return glfwWindowShouldClose(window); }
+
 void OpenGLRenderer::DrawIndexed(OpenGLVertexBuffer& vb, DrawType drawType) const
 {
 	vb.BindRendering();
@@ -110,6 +112,10 @@ void OpenGLRenderer::DrawModel(Model& model)
         DrawMesh(model.meshes[i]);
     }
 }
+
+inline void OpenGLRenderer::Finish() { glfwSwapBuffers(window); }
+
+inline void OpenGLRenderer::Poll() { glfwPollEvents(); }
 
 void OpenGLRenderer::SetupMesh(Mesh& mesh)
 {
@@ -199,6 +205,7 @@ bool OpenGLRenderer::SetupTexture(Texture& tex)
     glGenTextures(1, &textureID);
 
     int width, height, nrComponents;
+    stbi_set_flip_vertically_on_load(true);
     unsigned char* data = stbi_load(tex.path.c_str(), &width, &height, &nrComponents, 0);
     if (data)
     {

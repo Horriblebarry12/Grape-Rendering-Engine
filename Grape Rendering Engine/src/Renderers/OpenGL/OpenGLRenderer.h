@@ -1,4 +1,5 @@
 #pragma once
+#include "GrapePCH.h"
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 #include "GLMaterial.h"
@@ -8,7 +9,7 @@
 /// Recomend using Mesh if you don't need a spesific layout.
 /// NOTE: This class is spesific to OpenGL and OpenGL Only
 /// </summary>
-struct OpenGLVertexBuffer
+struct GP_API OpenGLVertexBuffer
 {
 public:
 
@@ -119,7 +120,7 @@ class Mesh;
 class Model;
 struct Texture;
 
-class OpenGLRenderer
+class GP_API OpenGLRenderer
 {
 public:
 
@@ -135,7 +136,7 @@ public:
 
 	void Clear();
 
-	inline int ShouldClose()  { return glfwWindowShouldClose(window); };
+	inline int ShouldClose();
 
 	void DrawIndexed(OpenGLVertexBuffer& vb, DrawType drawType = DrawType::Triangle) const;
 	void DrawArray(OpenGLVertexBuffer& vb, DrawType drawType = DrawType::Triangle);
@@ -143,9 +144,9 @@ public:
 	void DrawModel(Model& model);
 
 
-	inline void Finish() { glfwSwapBuffers(window); }
+	inline void Finish();
 
-	inline void Poll() { glfwPollEvents(); }
+	inline void Poll();
 
 	void SetupMesh(Mesh& mesh);
 	void SetupModel(Model& model);

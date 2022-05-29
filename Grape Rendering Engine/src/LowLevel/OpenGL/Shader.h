@@ -1,15 +1,16 @@
 #pragma once
 #include <string>
 #include "glm/gtc/matrix_transform.hpp"
+#include "OpenGLPCH.h"
 
-struct ShaderProgranSource
+struct GP_API ShaderProgranSource
 {
 	std::string VertexSource;
 	std::string FragmentSource;
 };
 
 
-class Shader
+class GP_API Shader
 {
 public:
 	Shader(const std::string& filename = "res/shaders/DefaultShader.shader");

@@ -1,7 +1,7 @@
 #pragma once
 #include "GrapePCH.h"
 
-class Material
+class GP_API Material
 {
 public:
 	virtual void Bind() const = 0;

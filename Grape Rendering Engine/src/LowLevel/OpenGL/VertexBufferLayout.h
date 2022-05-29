@@ -2,8 +2,9 @@
 #include <vector>
 #include "GLDebug.h"
 #include <GL\glew.h>
+#include "OpenGLPCH.h"
 
-struct VertexBufferElement
+struct GP_API VertexBufferElement
 {
 public:
 	unsigned int Type;
